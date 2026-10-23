@@ -150,7 +150,7 @@ pip install reportlab && python scripts/generate_resume.py
 ## EmailJS contact form
 
 1. Connect your email provider in the EmailJS dashboard and copy the Service ID.
-2. Create an email template. Set **To Email** to your own inbox, **Reply To** to `{{reply_to}}`, and use `{{from_name}}`, `{{from_email}}`, and `{{message}}` in the body. Keep the recipient fixed in the template.
+2. Create an email template. Set **To Email** to your own inbox. Enable **Use Default Email Address** for **From Email**, set **From Name** to `{{name}}`, **Reply To** to `{{email}}`, and **Subject** to `{{subject}}`. Use `{{name}}`, `{{email}}`, `{{subject}}`, and `{{message}}` in the body. The form generates the subject from the sender name. Keep the recipient fixed in the template.
 3. Copy the Template ID and your account Public Key.
 4. Set `NEXT_PUBLIC_EMAILJS_SERVICE_ID`, `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID`, and `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` in `.env` locally and in Netlify environment variables (Builds scope). Never add a private key to these variables.
 5. Add `https://adarsh-portfolio-yw1d.netlify.app` to EmailJS's allowed origins, if origin restrictions are enabled. Redeploy Netlify after configuring the variables.

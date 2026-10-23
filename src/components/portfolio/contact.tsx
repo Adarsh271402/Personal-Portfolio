@@ -69,6 +69,9 @@ export function Contact() {
           template_id: templateId,
           user_id: publicKey,
           template_params: {
+            name: form.name.trim(),
+            email: form.email.trim(),
+            subject: `Portfolio enquiry from ${form.name.trim()}`,
             from_name: form.name.trim(),
             from_email: form.email.trim(),
             reply_to: form.email.trim(),
