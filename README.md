@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+# Adarsh Gupta — Modern Animated Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Tailwind CSS 4**, **shadcn/ui**, **Framer Motion** and **Prisma (SQLite)**. Light + dark themes, 30+ animation touchpoints, working contact form with database persistence.
 
-## Available Scripts
+![Stack](https://img.shields.io/badge/Next.js-16-black) ![TS](https://img.shields.io/badge/TypeScript-5-blue) ![Tailwind](https://img.shields.io/badge/TailwindCSS-4-38bdf8) ![Prisma](https://img.shields.io/badge/Prisma-SQLite-2D3748)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ✨ Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Section | Highlights |
+|---|---|
+| **Hero** | Mouse-parallax layers, typewriter role text, live C# code window with line-by-line typing animation, floating .NET/React badges, shine-sweep buttons, animated stat counters, infinite tech marquee, handwritten annotations, scroll cue |
+| **About** | Photo with floating chip, fact cards, scroll-reveal animations |
+| **Skills** | Brand-tinted tech cards with shine sweep + animated proficiency bars, "also familiar with" sidebar |
+| **Experience** | Scroll-driven timeline with progress line, travelling glow and pulse nodes |
+| **Projects** | Image zoom on hover, gradient overlays, floating action chips, tags |
+| **GitHub** | Profile card, animated counters, 26×7 contribution heatmap with staggered cell reveal, top repos |
+| **Contact** | Working form → `/api/contact` API → Prisma + SQLite persistence, button state machine (idle/sending/sent), toast notifications |
+| **Global** | Glass navbar with scrollspy + animated pill, dark/light theme toggle, top scroll-progress bar, cursor glow, back-to-top with progress ring, custom scrollbar |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🚀 Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- **Node.js 20+** and **Bun** (recommended) or npm/pnpm/yarn
+  - Install Bun: `curl -fsSL https://bun.sh/install | bash`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Install dependencies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+bun install        # or: npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Configure environment
 
-### `npm run eject`
+```bash
+cp .env.example .env
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The default `DATABASE_URL=file:../db/custom.db` resolves relative to `prisma/schema.prisma` (the `db/` folder is already included).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 3. Create the database
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+bun run db:push    # or: npx prisma db push
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 4. Run the dev server
 
-## Learn More
+```bash
+bun run dev        # or: npm run dev
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Open **http://localhost:3000** in your browser.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 5. Production build (optional)
 
-### Code Splitting
+```bash
+bun run build && bun run start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🗂️ Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+├── src/
+│   ├── app/
+│   │   ├── page.tsx                  # Page composition (all sections)
+│   │   ├── layout.tsx                # Fonts, SEO metadata, ThemeProvider
+│   │   ├── globals.css               # Theme tokens, keyframes, utilities
+│   │   └── api/contact/route.ts      # Contact form API (zod validation)
+│   ├── components/
+│   │   ├── portfolio/                # ← All portfolio sections & effects
+│   │   │   ├── navbar.tsx            # Glass navbar, scrollspy, mobile menu
+│   │   │   ├── hero.tsx              # Animated hero + code window
+│   │   │   ├── about.tsx  tech-stack.tsx  experience.tsx
+│   │   │   ├── projects.tsx  github.tsx  contact.tsx  footer.tsx
+│   │   │   ├── reveal.tsx            # Scroll-reveal wrappers
+│   │   │   ├── typing-text.tsx  animated-counter.tsx  section-heading.tsx
+│   │   │   ├── scroll-progress.tsx  cursor-glow.tsx  back-to-top.tsx
+│   │   │   └── providers.tsx
+│   │   └── ui/                       # shadcn/ui components
+│   ├── lib/
+│   │   ├── portfolio-data.ts         # ← ★ EDIT ALL YOUR CONTENT HERE
+│   │   ├── db.ts                     # Prisma client singleton
+│   │   └── utils.ts
+│   └── hooks/
+├── prisma/schema.prisma              # ContactMessage model
+├── db/custom.db                      # SQLite database (auto-created)
+├── public/
+│   ├── portfolio/                    # Profile & project images
+│   ├── resume.pdf                    # Downloadable resume
+│   └── favicon.svg  logo.svg
+└── scripts/generate_resume.py        # Resume PDF generator (reportlab)
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🎨 Customization Guide
 
-### Advanced Configuration
+### Change your content (name, projects, links, stats)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Everything lives in **`src/lib/portfolio-data.ts`**:
+- `NAV_LINKS` — navigation items
+- `TECH_STACK` — skills with proficiency levels
+- `TIMELINE` — education/experience entries
+- `PROJECTS` — featured projects
+- `TYPED_PHRASES` — hero typewriter phrases
+- Social links, GitHub stats, contact info
 
-### Deployment
+### Change images
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Replace files in `public/portfolio/` (`profile.png`, `project-*.png`) keeping the same names, or update paths in `portfolio-data.ts`.
 
-### `npm run build` fails to minify
+### Change colors / theme
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Theme tokens are defined in **`src/app/globals.css`** (CSS variables for light + dark). Brand orange: `#e8622c`, navy: `#1d2634`, cream: `#f5f2ec`.
+
+### Update the resume
+
+Edit `scripts/generate_resume.py` and run:
+
+```bash
+pip install reportlab && python scripts/generate_resume.py
+```
+
+---
+
+## 🛠️ Scripts
+
+| Command | Description |
+|---|---|
+| `bun run dev` | Start dev server on port 3000 |
+| `bun run lint` | Run ESLint |
+| `bun run build` | Production build |
+| `bun run start` | Start production server |
+| `bun run db:push` | Push Prisma schema to SQLite |
