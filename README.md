@@ -5,7 +5,7 @@
 
 **Live portfolio:** https://adarsh-portfolio-yw1d.netlify.app
 
-> Deployment note: The hosted contact form needs persistent storage; the local SQLite database is for local development.
+> Contact form: EmailJS sends messages to the inbox configured in your EmailJS template. Configure the public environment variables below before deploying.
 
 A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Tailwind CSS 4**, **shadcn/ui**, **Framer Motion** and **Prisma (SQLite)**. Light + dark themes, 30+ animation touchpoints, working contact form with database persistence.
 
@@ -146,3 +146,14 @@ pip install reportlab && python scripts/generate_resume.py
 | `bun run build` | Production build |
 | `bun run start` | Start production server |
 | `bun run db:push` | Push Prisma schema to SQLite |
+
+## EmailJS contact form
+
+1. Connect your email provider in the EmailJS dashboard and copy the Service ID.
+2. Create an email template. Set **To Email** to your own inbox, **Reply To** to `{{reply_to}}`, and use `{{from_name}}`, `{{from_email}}`, and `{{message}}` in the body. Keep the recipient fixed in the template.
+3. Copy the Template ID and your account Public Key.
+4. Set `NEXT_PUBLIC_EMAILJS_SERVICE_ID`, `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID`, and `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` in `.env` locally and in Netlify environment variables (Builds scope). Never add a private key to these variables.
+5. Add `https://adarsh-portfolio-yw1d.netlify.app` to EmailJS's allowed origins, if origin restrictions are enabled. Redeploy Netlify after configuring the variables.
+6. Submit a test message from the live form and confirm inbox delivery. This form sends directly through EmailJS; the legacy `/api/contact` SQLite endpoint is unused.
+
+EmailJS REST API documentation: https://www.emailjs.com/docs/rest-api/send/

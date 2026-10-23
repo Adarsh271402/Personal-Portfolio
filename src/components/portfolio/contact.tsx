@@ -54,10 +54,28 @@ export function Contact() {
 
     setStatus("sending");
     try {
-      const res = await fetch("/api/contact", {
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("Email service is not configured");
+      }
+
+      const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          service_id: serviceId,
+          template_id: templateId,
+          user_id: publicKey,
+          template_params: {
+            from_name: form.name.trim(),
+            from_email: form.email.trim(),
+            reply_to: form.email.trim(),
+            message: form.message.trim(),
+          },
+        }),
+        signal: AbortSignal.timeout(15000),
       });
       if (!res.ok) throw new Error("Request failed");
       setStatus("sent");
@@ -71,7 +89,7 @@ export function Contact() {
       setStatus("error");
       toast({
         title: "Something went wrong",
-        description: "Please try again in a moment.",
+        description: "Please try again or email adarshgupta02027@gmail.com directly.",
         variant: "destructive",
       });
       setTimeout(() => setStatus("idle"), 3000);
@@ -103,6 +121,8 @@ export function Contact() {
                       Your Name *
                     </span>
                     <input
+                      maxLength={100}
+                      autoComplete="name"
                       value={form.name}
                       onChange={update("name")}
                       placeholder="Enter your name"
@@ -115,6 +135,8 @@ export function Contact() {
                     </span>
                     <input
                       type="email"
+                      maxLength={200}
+                      autoComplete="email"
                       value={form.email}
                       onChange={update("email")}
                       placeholder="Enter your email"
@@ -127,6 +149,7 @@ export function Contact() {
                     Message *
                   </span>
                   <textarea
+                    maxLength={5000}
                     value={form.message}
                     onChange={update("message")}
                     rows={5}
