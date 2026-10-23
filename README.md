@@ -1,5 +1,12 @@
 # Adarsh Gupta — Modern Animated Portfolio
 
+
+[![View Live Portfolio](https://img.shields.io/badge/View_Live_Portfolio-Open_Website-22c55e?style=for-the-badge)](https://adarsh-portfolio-yw1d.netlify.app)
+
+**Live portfolio:** https://adarsh-portfolio-yw1d.netlify.app
+
+> Deployment note: The hosted contact form needs persistent storage; the local SQLite database is for local development.
+
 A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Tailwind CSS 4**, **shadcn/ui**, **Framer Motion** and **Prisma (SQLite)**. Light + dark themes, 30+ animation touchpoints, working contact form with database persistence.
 
 ![Stack](https://img.shields.io/badge/Next.js-16-black) ![TS](https://img.shields.io/badge/TypeScript-5-blue) ![Tailwind](https://img.shields.io/badge/TailwindCSS-4-38bdf8) ![Prisma](https://img.shields.io/badge/Prisma-SQLite-2D3748)
