@@ -4,7 +4,7 @@
 
 # EmailJS browser identifiers are public, not private credentials.
 [build.environment]
-  NEXT_PUBLIC_EMAILJS_SERVICE_ID = "service_mzy8vkf"
+  NEXT_PUBLIC_EMAILJS_SERVICE_ID = "service_5hic48z"
   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID = "template_bls9pwh"
   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY = "WMawZJ6VKTzTLq7iZ"
 
