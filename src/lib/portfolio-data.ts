@@ -122,6 +122,7 @@ export const GITHUB_STATS = {
 };
 
 export const GITHUB_URL = `https://github.com/${GITHUB_STATS.username}`;
+export const TWITTER_URL = "https://x.com/Adarsh271402";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/adarsh4007/";
 
 export const TOP_REPOS = [
@@ -136,7 +137,7 @@ export const TOP_REPOS = [
 export const SOCIALS = [
   { name: "GitHub", href: GITHUB_URL },
   { name: "LinkedIn", href: LINKEDIN_URL },
-  { name: "Twitter", href: "https://twitter.com/" },
+  { name: "Twitter", href: TWITTER_URL },
   { name: "Instagram", href: "https://www.instagram.com/" },
 ];
 

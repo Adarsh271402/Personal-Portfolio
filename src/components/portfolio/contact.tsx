@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { GITHUB_URL, LINKEDIN_URL } from "@/lib/portfolio-data";
+import { GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from "@/lib/portfolio-data";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CheckCircle2,
@@ -264,7 +264,7 @@ export function Contact() {
                   {[
                     { Icon: Github, label: "GitHub", href: GITHUB_URL },
                     { Icon: Linkedin, label: "LinkedIn", href: LINKEDIN_URL },
-                    { Icon: Twitter, label: "Twitter", href: "https://twitter.com/" },
+                    { Icon: Twitter, label: "Twitter", href: TWITTER_URL },
                     { Icon: Instagram, label: "Instagram", href: "https://www.instagram.com/" },
                   ].map(({ Icon, label, href }, i) => (
                     <motion.a

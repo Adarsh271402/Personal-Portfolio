@@ -20,7 +20,7 @@ import {
 import { CodeWindow } from "./code-window";
 import { TypingText } from "./typing-text";
 import { AnimatedCounter } from "./animated-counter";
-import { GITHUB_URL, LINKEDIN_URL, HERO_STATS, MARQUEE_ITEMS } from "@/lib/portfolio-data";
+import { GITHUB_URL, LINKEDIN_URL, TWITTER_URL, HERO_STATS, MARQUEE_ITEMS } from "@/lib/portfolio-data";
 
 const socialIcon = {
   GitHub: Github,
@@ -163,9 +163,9 @@ export function Hero() {
             {Object.entries(socialIcon).map(([name, Icon], i) => (
               <motion.a
                 key={name}
-                href={name === "GitHub" ? GITHUB_URL : name === "LinkedIn" ? LINKEDIN_URL : "#contact"}
-                target={name === "GitHub" || name === "LinkedIn" ? "_blank" : undefined}
-                rel={name === "GitHub" || name === "LinkedIn" ? "noreferrer" : undefined}
+                href={name === "GitHub" ? GITHUB_URL : name === "LinkedIn" ? LINKEDIN_URL : name === "Twitter" ? TWITTER_URL : "#contact"}
+                target={name === "GitHub" || name === "LinkedIn" || name === "Twitter" ? "_blank" : undefined}
+                rel={name === "GitHub" || name === "LinkedIn" || name === "Twitter" ? "noreferrer" : undefined}
                 aria-label={name}
                 whileHover={{ y: -5, scale: 1.1, rotate: i % 2 ? 4 : -4 }}
                 whileTap={{ scale: 0.9 }}
