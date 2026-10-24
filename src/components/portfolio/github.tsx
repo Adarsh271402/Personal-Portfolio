@@ -165,7 +165,7 @@ export function GitHubSection() {
                 {TOP_REPOS.map((repo) => (
                   <li key={repo.name}>
                     <motion.a
-                      href={`${GITHUB_URL}/${repo.name}`}
+                      href={"href" in repo ? repo.href : `${GITHUB_URL}/${repo.name}`}
                       target="_blank"
                       rel="noreferrer"
                       whileHover={{ x: 6 }}

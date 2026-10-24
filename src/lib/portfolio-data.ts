@@ -93,6 +93,7 @@ export const TIMELINE = [
 export const PROJECTS = [
   {
     title: "Task Manager Pro",
+    href: "https://task-manager-pro-p80i.onrender.com/login",
     image: "/portfolio/project-task.png",
     tags: [".NET", "React", "SQL Server"],
     desc: "A full-stack task management application with authentication, role-based access and real-time updates.",
@@ -126,7 +127,7 @@ export const TWITTER_URL = "https://x.com/Adarsh271402";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/adarsh4007/";
 
 export const TOP_REPOS = [
-  { name: "InterviewPrepSystem" },
+  { name: "InterviewPrepSystem", href: "https://interviewprep-adarsh.netlify.app/login" },
   { name: "UserMangement" },
   { name: "Personal-Portfolio" },
   { name: "delta-d" },

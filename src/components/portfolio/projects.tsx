@@ -103,7 +103,7 @@ export function Projects() {
                   {project.desc}
                 </p>
                 <a
-                  href={GITHUB_URL}
+                  href={"href" in project ? project.href : GITHUB_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-brand"
