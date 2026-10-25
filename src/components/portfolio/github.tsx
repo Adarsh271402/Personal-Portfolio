@@ -146,7 +146,7 @@ export function GitHubSection() {
                 className="mt-5 grid grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-background/60 py-4"
               >
                 {[
-                  { value: activity?.repos, label: "Repositories" },
+                  { value: activity?.repos, label: "Total Repositories" },
                   { value: activity?.followers, label: "Followers" },
                   { value: activity?.following, label: "Following" },
                 ].map((s) => (

@@ -21,7 +21,7 @@ export async function GET() {
     const profile = (await profileResponse.json()) as GitHubProfile;
     return Response.json(
       {
-        repos: profile.public_repos,
+        repos: profile.public_repos + GITHUB_STATS.privateRepos,
         followers: profile.followers,
         following: profile.following,
       },
