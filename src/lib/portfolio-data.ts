@@ -101,6 +101,7 @@ export const PROJECTS = [
   },
   {
     title: "E-Commerce Platform",
+    href: "https://encett-ecommerce.netlify.app/",
     image: "/portfolio/project-ecommerce.png",
     tags: ["ASP.NET", "SQL Server", "JavaScript"],
     desc: "Online shopping platform with cart, orders and user management.",
@@ -108,6 +109,7 @@ export const PROJECTS = [
   },
   {
     title: "Weather App",
+    href: "https://skycast-weather-adarsh271402.netlify.app/",
     image: "/portfolio/project-weather.png",
     tags: ["React", "API", "Tailwind CSS"],
     desc: "Get real-time weather updates with beautiful UI and location search.",
