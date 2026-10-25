@@ -128,10 +128,9 @@ export const LINKEDIN_URL = "https://www.linkedin.com/in/adarsh4007/";
 
 export const TOP_REPOS = [
   { name: "InterviewPrepSystem", href: "https://interviewprep-adarsh.netlify.app/login" },
+  { name: "task-manager-pro", href: "https://task-manager-pro-p80i.onrender.com/login" },
   { name: "UserMangement" },
   { name: "Personal-Portfolio" },
-  { name: "delta-d" },
-  { name: "AdvHooks" },
   { name: "Electricity_bill" },
 ];
 
