@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { BookOpen, ExternalLink, Users } from "lucide-react";
 import Image from "next/image";
@@ -10,36 +10,50 @@ import { SectionHeading } from "./section-heading";
 import { AnimatedCounter } from "./animated-counter";
 import { GITHUB_STATS, GITHUB_URL, TOP_REPOS } from "@/lib/portfolio-data";
 
-/** deterministic pseudo-random intensity (no hydration mismatches) */
-function intensity(row: number, col: number) {
-  const h = Math.sin(row * 12.9898 + col * 78.233) * 43758.5453;
-  const v = h - Math.floor(h);
-  if (v < 0.18) return 0;
-  if (v < 0.42) return 1;
-  if (v < 0.68) return 2;
-  if (v < 0.88) return 3;
-  return 4;
-}
+type GitHubActivity = {
+  repos: number;
+  followers: number;
+  following: number;
+  contributions: { date: string; level: number }[];
+  totalContributions: number | null;
+};
 
-function ContributionGraph() {
+function ContributionGraph({ activity }: { activity: GitHubActivity | null }) {
   const weeks = 26;
   const days = 7;
-  const grid = useMemo(
-    () =>
-      Array.from({ length: weeks }, (_, c) =>
-        Array.from({ length: days }, (_, r) => intensity(r, c))
-      ),
-    []
-  );
+  const grid = useMemo(() => {
+    if (!activity?.contributions.length) return [];
+    const levels = new Map(activity.contributions.map(({ date, level }) => [date, level]));
+    const lastDate = new Date(`${activity.contributions.at(-1)?.date}T00:00:00Z`);
+    const currentSunday = new Date(lastDate);
+    currentSunday.setUTCDate(currentSunday.getUTCDate() - currentSunday.getUTCDay());
+
+    return Array.from({ length: weeks }, (_, week) =>
+      Array.from({ length: days }, (_, day) => {
+        const date = new Date(currentSunday);
+        date.setUTCDate(date.getUTCDate() - (weeks - 1 - week) * days + day);
+        const dateString = date.toISOString().slice(0, 10);
+        return { date: dateString, level: levels.get(dateString) ?? 0, future: date > lastDate };
+      })
+    );
+  }, [activity]);
+
+  if (!grid.length) {
+    return (
+      <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-brand hover:underline">
+        View contributions on GitHub
+      </a>
+    );
+  }
 
   return (
     <div className="mt-5 overflow-x-auto pb-1">
       <div className="flex w-max gap-[3px]">
         {grid.map((week, c) => (
           <div key={c} className="flex flex-col gap-[3px]">
-            {week.map((level, r) => (
+            {week.map(({ date, level, future }) => (
               <motion.span
-                key={r}
+                key={date}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-30px" }}
@@ -48,8 +62,8 @@ function ContributionGraph() {
                   delay: 0.35 + (c * days + r) * 0.004,
                   ease: "easeOut",
                 }}
-                title={`${level * 3} contributions`}
-                className={`gh-cell-${level} h-[10px] w-[10px] rounded-[3px] sm:h-[11px] sm:w-[11px]`}
+                title={`${date}: ${future ? "No data yet" : `Activity level ${level}`}`}
+                className={`${future ? "bg-transparent" : `gh-cell-${level}`} h-[10px] w-[10px] rounded-[3px] sm:h-[11px] sm:w-[11px]`}
               />
             ))}
           </div>
@@ -68,6 +82,22 @@ function ContributionGraph() {
 }
 
 export function GitHubSection() {
+  const [activity, setActivity] = useState<GitHubActivity | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/github-activity", { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error("GitHub activity request failed");
+        return response.json() as Promise<GitHubActivity>;
+      })
+      .then(setActivity)
+      .catch((error) => {
+        if (error.name !== "AbortError") console.error("Could not load GitHub activity", error);
+      });
+    return () => controller.abort();
+  }, []);
+
   return (
     <section id="github" className="relative scroll-mt-24 px-4 py-16 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-6xl">
@@ -124,9 +154,9 @@ export function GitHubSection() {
                 className="mt-5 grid grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-background/60 py-4"
               >
                 {[
-                  { value: GITHUB_STATS.repos, label: "Repositories" },
-                  { value: GITHUB_STATS.followers, label: "Followers" },
-                  { value: GITHUB_STATS.following, label: "Following" },
+                  { value: activity?.repos, label: "Repositories" },
+                  { value: activity?.followers, label: "Followers" },
+                  { value: activity?.following, label: "Following" },
                 ].map((s) => (
                   <motion.div
                     key={s.label}
@@ -138,7 +168,7 @@ export function GitHubSection() {
                   >
                     <dt className="sr-only">{s.label}</dt>
                     <dd className="text-xl font-extrabold text-foreground sm:text-2xl">
-                      <AnimatedCounter value={s.value} />
+                      {s.value === undefined ? "—" : <AnimatedCounter value={s.value} />}
                     </dd>
                     <dd className="mt-0.5 text-[10.5px] font-medium uppercase tracking-wider text-muted-foreground">
                       {s.label}
@@ -149,9 +179,11 @@ export function GitHubSection() {
 
               <p className="mt-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <BookOpen className="h-3.5 w-3.5 text-brand" />
-                Contribution Graph
+                {activity?.totalContributions === null || activity?.totalContributions === undefined
+                  ? "Contribution Graph"
+                  : `${activity.totalContributions} contributions in the last year`}
               </p>
-              <ContributionGraph />
+              <ContributionGraph activity={activity} />
             </div>
           </Reveal>
 

@@ -119,9 +119,6 @@ export const PROJECTS = [
 
 export const GITHUB_STATS = {
   username: "Adarsh271402",
-  repos: 8,
-  followers: 1,
-  following: 0,
 };
 
 export const GITHUB_URL = `https://github.com/${GITHUB_STATS.username}`;
