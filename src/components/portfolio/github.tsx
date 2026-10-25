@@ -14,46 +14,38 @@ type GitHubActivity = {
   repos: number;
   followers: number;
   following: number;
-  contributions: { date: string; level: number }[];
-  totalContributions: number | null;
 };
 
-function ContributionGraph({ activity }: { activity: GitHubActivity | null }) {
+/** deterministic pseudo-random intensity (no hydration mismatches) */
+function intensity(row: number, col: number) {
+  const h = Math.sin(row * 12.9898 + col * 78.233) * 43758.5453;
+  const v = h - Math.floor(h);
+  if (v < 0.18) return 0;
+  if (v < 0.42) return 1;
+  if (v < 0.68) return 2;
+  if (v < 0.88) return 3;
+  return 4;
+}
+
+function ContributionGraph() {
   const weeks = 26;
   const days = 7;
-  const grid = useMemo(() => {
-    if (!activity?.contributions.length) return [];
-    const levels = new Map(activity.contributions.map(({ date, level }) => [date, level]));
-    const lastDate = new Date(`${activity.contributions.at(-1)?.date}T00:00:00Z`);
-    const currentSunday = new Date(lastDate);
-    currentSunday.setUTCDate(currentSunday.getUTCDate() - currentSunday.getUTCDay());
-
-    return Array.from({ length: weeks }, (_, week) =>
-      Array.from({ length: days }, (_, day) => {
-        const date = new Date(currentSunday);
-        date.setUTCDate(date.getUTCDate() - (weeks - 1 - week) * days + day);
-        const dateString = date.toISOString().slice(0, 10);
-        return { date: dateString, level: levels.get(dateString) ?? 0, future: date > lastDate };
-      })
-    );
-  }, [activity]);
-
-  if (!grid.length) {
-    return (
-      <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-brand hover:underline">
-        View contributions on GitHub
-      </a>
-    );
-  }
+  const grid = useMemo(
+    () =>
+      Array.from({ length: weeks }, (_, c) =>
+        Array.from({ length: days }, (_, r) => intensity(r, c))
+      ),
+    []
+  );
 
   return (
     <div className="mt-5 overflow-x-auto pb-1">
       <div className="flex w-max gap-[3px]">
         {grid.map((week, c) => (
           <div key={c} className="flex flex-col gap-[3px]">
-            {week.map(({ date, level, future }, r) => (
+            {week.map((level, r) => (
               <motion.span
-                key={date}
+                key={r}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-30px" }}
@@ -62,8 +54,8 @@ function ContributionGraph({ activity }: { activity: GitHubActivity | null }) {
                   delay: 0.35 + (c * days + r) * 0.004,
                   ease: "easeOut",
                 }}
-                title={`${date}: ${future ? "No data yet" : `Activity level ${level}`}`}
-                className={`${future ? "bg-transparent" : `gh-cell-${level}`} h-[10px] w-[10px] rounded-[3px] sm:h-[11px] sm:w-[11px]`}
+                title={`${level * 3} contributions`}
+                className={`gh-cell-${level} h-[10px] w-[10px] rounded-[3px] sm:h-[11px] sm:w-[11px]`}
               />
             ))}
           </div>
@@ -179,11 +171,9 @@ export function GitHubSection() {
 
               <p className="mt-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <BookOpen className="h-3.5 w-3.5 text-brand" />
-                {activity?.totalContributions === null || activity?.totalContributions === undefined
-                  ? "Contribution Graph"
-                  : `${activity.totalContributions} contributions in the last year`}
+                Contribution Graph
               </p>
-              <ContributionGraph activity={activity} />
+              <ContributionGraph />
             </div>
           </Reveal>
 
