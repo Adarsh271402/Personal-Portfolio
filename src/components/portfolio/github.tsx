@@ -51,7 +51,7 @@ function ContributionGraph({ activity }: { activity: GitHubActivity | null }) {
       <div className="flex w-max gap-[3px]">
         {grid.map((week, c) => (
           <div key={c} className="flex flex-col gap-[3px]">
-            {week.map(({ date, level, future }) => (
+            {week.map(({ date, level, future }, r) => (
               <motion.span
                 key={date}
                 initial={{ opacity: 0, scale: 0 }}
