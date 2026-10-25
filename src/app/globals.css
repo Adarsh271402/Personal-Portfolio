@@ -225,6 +225,12 @@
 }
 
 /* Custom scrollbar */
+@media (pointer: fine) {
+  html.custom-cursor, html.custom-cursor * {
+    cursor: none !important;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;

@@ -57,12 +57,12 @@ export const MARQUEE_ITEMS = [
 
 export const TIMELINE = [
   {
-    period: "2024 - 2025",
+    period: "2025 - Present",
     title: "Internship (Full Stack Developer)",
     org: "AADISWAN INFO CONSULTANTS Pvt Ltd",
     desc: "Worked on real-world projects using .NET, SQL Server and Bootstrap.",
     tags: [".NET", "SQL Server", "Bootstrap"],
-    current: false,
+    current: true,
   },
   {
     period: "Pursuing",

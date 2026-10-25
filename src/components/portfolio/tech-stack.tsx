@@ -10,7 +10,7 @@ function TechCard({ tech, index }: { tech: TechItem; index: number }) {
   return (
     <motion.div
       variants={staggerChild}
-      whileHover={{ y: -8, scale: 1.03 }}
+      whileHover={{ y: -4, scale: 1.01 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="group relative overflow-hidden rounded-2xl border border-border bg-card p-4 text-center shadow-sm"
     >
@@ -22,9 +22,18 @@ function TechCard({ tech, index }: { tech: TechItem; index: number }) {
 
       <div className="relative mx-auto w-fit">
         <span
-          className="grid h-14 w-14 place-items-center rounded-2xl text-sm font-extrabold shadow-md transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
-          style={{ background: tech.tint, color: tech.fg }}
+          aria-hidden
+          className="pointer-events-none absolute -bottom-1.5 left-2 right-2 h-2 rounded-full bg-black/20 blur-[5px] transition-all duration-300 group-hover:-bottom-2 group-hover:blur-[7px] dark:bg-black/40"
+        />
+        <span
+          className="relative grid h-14 w-14 place-items-center rounded-2xl border border-white/20 text-sm font-extrabold transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-[1.04]"
+          style={{
+            background: `radial-gradient(circle at 25% 14%, color-mix(in srgb, ${tech.tint} 77%, white), transparent 68%), linear-gradient(145deg, color-mix(in srgb, ${tech.tint} 93%, white), ${tech.tint} 55%, color-mix(in srgb, ${tech.tint} 79%, black))`,
+            color: tech.fg,
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,.42), inset 0 -3px 0 rgba(0,0,0,.17), 0 6px 10px -4px rgba(16,21,31,.32)",
+          }}
         >
+          <span aria-hidden className="pointer-events-none absolute inset-[3px] rounded-[13px] border-t border-white/25" />
           {tech.monogram}
         </span>
         <span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 scale-0 place-items-center rounded-full bg-brand text-white transition-transform duration-300 group-hover:scale-100">
