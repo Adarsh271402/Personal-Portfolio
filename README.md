@@ -7,11 +7,17 @@
 
 > Contact form: EmailJS sends messages to the inbox configured in your EmailJS template. Configure the public environment variables below before deploying.
 
-A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Tailwind CSS 4**, **shadcn/ui**, **Framer Motion** and **Prisma (SQLite)**. Light + dark themes, 30+ animation touchpoints, working contact form with database persistence.
+A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Tailwind CSS 4**, **shadcn/ui**, **Framer Motion** and **Prisma (SQLite)**. Light and dark themes, animated sections, resume download and an EmailJS contact form. Prisma/SQLite remains in the repository for the legacy contact API; the current form sends directly through EmailJS.
 
 ![Stack](https://img.shields.io/badge/Next.js-16-black) ![TS](https://img.shields.io/badge/TypeScript-5-blue) ![Tailwind](https://img.shields.io/badge/TailwindCSS-4-38bdf8) ![Prisma](https://img.shields.io/badge/Prisma-SQLite-2D3748)
 
 ---
+
+## Preview
+
+![Adarsh Gupta portfolio homepage with developer introduction and project links](docs/images/preview.png)
+
+*Captured from the live application on 30 October 2026.*
 
 ## ✨ Features
 
@@ -23,7 +29,7 @@ A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Ta
 | **Experience** | Scroll-driven timeline with progress line, travelling glow and pulse nodes |
 | **Projects** | Image zoom on hover, gradient overlays, floating action chips, tags |
 | **GitHub** | Profile card, animated counters, 26×7 contribution heatmap with staggered cell reveal, top repos |
-| **Contact** | Working form → `/api/contact` API → Prisma + SQLite persistence, button state machine (idle/sending/sent), toast notifications |
+| **Contact** | EmailJS contact form with input validation, sending/success/error states and toast notifications |
 | **Global** | Glass navbar with scrollspy + animated pill, dark/light theme toggle, top scroll-progress bar, cursor glow, back-to-top with progress ring, custom scrollbar |
 
 ---
@@ -32,7 +38,7 @@ A single-page personal portfolio built with **Next.js 16**, **TypeScript**, **Ta
 
 ### Prerequisites
 
-- **Node.js 20+** and **Bun** (recommended) or npm/pnpm/yarn
+- **Node.js 20.9+** (or a newer supported LTS release) and **Bun** (recommended) or npm/pnpm/yarn
   - Install Bun: `curl -fsSL https://bun.sh/install | bash`
 
 ### 1. Install dependencies
@@ -79,7 +85,7 @@ bun run build && bun run start
 │   │   ├── page.tsx                  # Page composition (all sections)
 │   │   ├── layout.tsx                # Fonts, SEO metadata, ThemeProvider
 │   │   ├── globals.css               # Theme tokens, keyframes, utilities
-│   │   └── api/contact/route.ts      # Contact form API (zod validation)
+│   │   └── api/contact/route.ts      # Legacy contact API (zod validation)
 │   ├── components/
 │   │   ├── portfolio/                # ← All portfolio sections & effects
 │   │   │   ├── navbar.tsx            # Glass navbar, scrollspy, mobile menu
@@ -96,7 +102,7 @@ bun run build && bun run start
 │   │   ├── db.ts                     # Prisma client singleton
 │   │   └── utils.ts
 │   └── hooks/
-├── prisma/schema.prisma              # ContactMessage model
+├── prisma/schema.prisma              # Legacy ContactMessage model
 ├── db/custom.db                      # SQLite database (auto-created)
 ├── public/
 │   ├── portfolio/                    # Profile & project images
